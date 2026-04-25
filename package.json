@@ -7,9 +7,16 @@
     "type": "module",
     "url": "git+https://github.com/sseezov/wood-js.git"
   },
+  "scripts": {
+    "patch": "npm version patch && npm publish",
+    "minor": "npm version minor && npm publish",
+    "major": "npm version major && npm publish"
+  },
   "keywords": [],
   "author": "",
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "license": "MIT",
   "type": "module",
   "bugs": {
