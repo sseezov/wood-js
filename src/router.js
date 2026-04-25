@@ -3,6 +3,7 @@ import { handlers } from './handlers.js'
 
 let routes = []
 let errorComponent = {}
+
 export const setRoutes = (routesList) => {
   routes = routesList
   console.log('routerList', routesList);
@@ -47,5 +48,10 @@ document.addEventListener('click', async (event) => {
     mountRoute()
   }
 })
+
+export const redirect = (route) => {
+  history.pushState({}, '', `${route}`)
+  mountRoute()
+}
 
 window.addEventListener('popstate', () => mountRoute())
