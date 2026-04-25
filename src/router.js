@@ -1,4 +1,4 @@
-import render from './render.js'
+import { render } from './render.js'
 import { handlers } from './handlers.js'
 
 let routes = []

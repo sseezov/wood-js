@@ -1,5 +1,5 @@
 import { initListeners } from "./handlers"
-import render from "./render"
+import { render } from "./render"
 import { mountRoute, setErrorComponent, setRoutes } from "./router"
 
 export function initWood(App, routes, errorComponent = { component: () => 'error', parentSelector: '#app' }) {
