@@ -1,15 +1,10 @@
 import { initListeners } from './handlers.js'
-import { mountRoute, setRoutes, setErrorComponent } from './router.js'
 import render from './render.js'
+import { h, Fragment } from './h.js'
+import { initWood } from './initWood.js'
+import { handlers, registerClick, registerSubmit } from './handlers.js'
 
-export function initWood(
-  App,
-  routes,
-  errorComponent = { component: () => 'error', parentSelector: '#app' },
-) {
-  setRoutes(routes)
-  setErrorComponent(errorComponent)
-  render('#app', App())
-  initListeners()
-  mountRoute()
-}
+export { h, Fragment }
+export { handlers, registerClick, registerSubmit, initListeners }
+export { render }
+export { initWood }
