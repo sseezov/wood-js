@@ -6,8 +6,6 @@ let errorComponent = {}
 
 export const setRoutes = (routesList) => {
   routes = routesList
-  console.log('routerList', routesList);
-  console.log('routes ', routes);
 }
 export const setErrorComponent = (Error) => {
   errorComponent = Error

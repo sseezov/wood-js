@@ -13,7 +13,6 @@ export const handlers = {
 }
 
 export const registerClick = (handler) => {
-  console.log(handlers.click);
   const id = handlers.getId()
   handlers.click[id] = handler
   return id

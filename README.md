@@ -34,8 +34,8 @@ const ErrorRoute = { component: Error, parentSelector: '#main' } // set where to
 initWood(App, routes, ErrorRoute) // init app with main component, routes (optional), and error (optional)
 ```
 
-**Example**
-E-commerce web-site: <https://github.com/sseezov/n-store/tree/main/front-public>
+**Template**
+<https://github.com/sseezov/wood-js-template>
 
 ## Vite Setup
 
@@ -50,6 +50,7 @@ export default defineConfig({
     jsxInject: `import { h, Fragment } from '@sseezov/wood-js'`,
     jsxFragment: 'Fragment',
     jsx: 'transform',
+    jsxDev: false 
   }
 })
 ```
