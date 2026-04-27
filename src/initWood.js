@@ -4,7 +4,7 @@ import { mountRoute, setErrorComponent, setRoutes } from "./router"
 
 export function initWood(App, routes, errorComponent) {
   render('#app', App())
-
+  
   if (routes) {
     setRoutes(routes)
     mountRoute()
@@ -13,6 +13,6 @@ export function initWood(App, routes, errorComponent) {
   if (errorComponent) {
     setErrorComponent(errorComponent)
   }
-
+  
   initListeners()
 }

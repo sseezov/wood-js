@@ -4,7 +4,7 @@ export function h(tag, props, ...children) {
   if (tag === 'Fragment') {
     return children.flat().join('')
   }
-  // Регистрируем обработчики
+
   if (props) {
     if (props['onClick']) {
       const handlerId = registerClick(props['onClick'])

@@ -1,5 +1,5 @@
 import { render } from './render.js'
-import { handlers } from './handlers.js'
+import { cleanDeadHandlers, handlers } from './handlers.js'
 
 let routes = []
 let errorComponent = {}
@@ -23,29 +23,12 @@ export const mountRoute = async () => {
   if (window.location.href.at(-1) === '/') history.replaceState({}, '', href)
   const { pathname } = new URL(href)
   const { component, parentSelector } = navigate(pathname)
-  handlers.clean()
   render(parentSelector, component())
 }
 
-document.addEventListener('click', async (event) => {
-  const link = event.target.closest('a')
-  if (link) {
-    const href = link.getAttribute('href')
-    event.preventDefault()
-    const handlerElement = link.closest('[data-handler]')
-    if (handlerElement) {
-      // Имитируем клик для срабатывания обработчика, если он в родителе ссылки
-      handlerElement.click()
-    }
-
-    if (href === 'back') {
-      history.back()
-      return
-    }
-    history.pushState({}, '', `${href}`)
-    mountRoute()
-  }
-})
+export const navigateBack = () => {
+  history.back()
+}
 
 export const redirect = (route) => {
   history.pushState({}, '', `${route}`)
