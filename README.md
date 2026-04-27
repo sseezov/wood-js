@@ -41,6 +41,7 @@ export default function Counter() {
     </>
   )
 }
+```
 
 ## How to start project?
 
