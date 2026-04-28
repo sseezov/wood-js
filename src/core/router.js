@@ -23,7 +23,8 @@ export const mountRoute = async () => {
   if (window.location.href.at(-1) === '/') history.replaceState({}, '', href)
   const { pathname } = new URL(href)
   const { component, parentSelector } = navigate(pathname)
-  render(parentSelector, component())
+  await render(parentSelector, component())
+  cleanDeadHandlers()
 }
 
 export const navigateBack = () => {
