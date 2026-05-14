@@ -1,4 +1,4 @@
-# 🌲 wood-js
+# wood-js
 
 **760 bytes** (minified + brotlied) — JSX library with built-in router.
 
