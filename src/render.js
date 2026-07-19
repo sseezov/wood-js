@@ -1,4 +1,5 @@
 export async function render(parentSelector, content) {
-  const innerHTML = await content;
-  document.querySelector(parentSelector).innerHTML = innerHTML;
-}
+  const element = await content;
+  const parent = document.querySelector(parentSelector);
+  parent.replaceChildren(element);
+};

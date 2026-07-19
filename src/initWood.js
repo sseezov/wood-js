@@ -1,4 +1,4 @@
-import { initListeners } from './core/handlers.js';
+import { initListeners } from './handlers.js';
 import { render } from './render.js';
 import { mountRoute, setErrorComponent, setRoutes } from './router.js';
 

@@ -7,9 +7,9 @@ let errorComponent = {};
 export const setRoutes = (routesList) => {
   routes = routesList;
 };
+
 export const setErrorComponent = (Error) => {
   errorComponent = Error;
-  console.log(errorComponent);
 };
 
 const navigate = pathname => routes
@@ -24,7 +24,7 @@ export const mountRoute = async () => {
   if (window.location.href.at(-1) === '/') history.replaceState({}, '', href);
   const { pathname } = new URL(href);
   const { component, parentSelector } = navigate(pathname);
-  await render(parentSelector, component());
+  await render(parentSelector, await component());
   cleanDeadHandlers();
 };
 

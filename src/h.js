@@ -1,56 +1,70 @@
-import { registerClick, registerContextMenu, registerMouseEnter, registerMouseLeave, registerSubmit } from './handlers';
+import {
+  registerChange,
+  registerClick,
+  registerContextMenu,
+  registerMouseEnter,
+  registerMouseLeave,
+  registerSubmit,
+} from './handlers';
+
+const escape = (str) => String(str).replace(/[&<>"]/g, (char) => `&#${char.charCodeAt(0)};`);
+
+const setProps = (element, props) => {
+  const listeners = {
+    onClick: registerClick,
+    onSubmit: registerSubmit,
+    onChange: registerChange,
+    onMouseEnter: registerMouseEnter,
+    onMouseLeave: registerMouseLeave,
+    onContextMenu: registerContextMenu,
+  };
+
+  Object.entries(props).forEach(([key, value]) => {
+    if (listeners[key]) { // сетаем обработчик
+      const handlerId = listeners[key](value);
+      element.setAttribute(`data-${key}`, handlerId);
+    }
+    else { // сетаем аттрибут
+      element.setAttribute(key, escape(value));
+    }
+  });
+};
+
+const isSvg = (tag) => [
+  'svg', 'path', 'circle', 'rect', 'line', 'g', 'defs',
+  'use', 'text', 'tspan', 'ellipse', 'polygon', 'polyline',
+].includes(tag);
+
+const toTextNode = (child) => (
+  child instanceof Node
+    ? child
+    : document.createTextNode(String(child))
+);
 
 export function h(tag, props, ...children) {
+  const flatChildren = children.flat();
+
   if (tag === 'Fragment') {
-    return children.flat().join('');
-  }
-
-  if (props) {
-    if (props['onClick']) {
-      const handlerId = registerClick(props['onClick']);
-      props['data-click'] = handlerId;
-      delete props['onClick'];
-    }
-
-    if (props['onSubmit']) {
-      const handlerId = registerSubmit(props['onSubmit']);
-      props['data-submit'] = handlerId;
-      delete props['onSubmit'];
-    }
-
-    if (props['onMouseEnter']) {
-      const handlerId = registerMouseEnter(props['onMouseEnter']);
-      props['data-mouseenter'] = handlerId;
-      delete props['onMouseEnter'];
-    }
-
-    if (props['onMouseLeave']) {
-      const handlerId = registerMouseLeave(props['onMouseLeave']);
-      props['data-mouseleave'] = handlerId;
-      delete props['onMouseLeave'];
-    }
-
-    if (props['onContextMenu']) {
-      const handlerId = registerContextMenu(props['onContextMenu']);
-      props['data-contextmenu'] = handlerId;
-      delete props['onContextMenu'];
-    }
+    const fragment = document.createDocumentFragment();
+    flatChildren.forEach((child) => fragment.append(toTextNode(child)));
+    return fragment;
   }
 
   if (typeof tag === 'function') {
-    return tag({ ...props, children: children.flat() });
+    return tag({ ...props, children: flatChildren });
   }
 
-  const attrs = props
-    ? Object.entries(props)
-        .filter(([, value]) => !!value) // убрал пустые классы типа 'class=""'
-        .map(([key, value]) => `${key}="${value}"`)
-        .join(' ')
-    : '';
+  const element = isSvg(tag)
+    ? document.createElementNS('http://www.w3.org/2000/svg', tag)
+    : document.createElement(tag);
 
-  const childrenStr = children.flat().join('');
+  if (props) {
+    setProps(element, props);
+  }
 
-  return `<${tag} ${attrs}>${childrenStr}</${tag}>`.replace(' >', '>');
+  flatChildren.forEach((child) => element.appendChild(toTextNode(child)));
+
+  return element;
 }
 
 export const Fragment = 'Fragment';
