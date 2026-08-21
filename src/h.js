@@ -1,31 +1,15 @@
-import {
-  registerChange,
-  registerClick,
-  registerContextMenu,
-  registerMouseEnter,
-  registerMouseLeave,
-  registerSubmit,
-} from './handlers';
-
-const escape = (str) => String(str).replace(/[&<>"]/g, (char) => `&#${char.charCodeAt(0)};`);
+import { handlersTypes, registry } from './handlers';
 
 const setProps = (element, props) => {
-  const listeners = {
-    onClick: registerClick,
-    onSubmit: registerSubmit,
-    onChange: registerChange,
-    onMouseEnter: registerMouseEnter,
-    onMouseLeave: registerMouseLeave,
-    onContextMenu: registerContextMenu,
-  };
-
   Object.entries(props).forEach(([key, value]) => {
-    if (listeners[key]) { // сетаем обработчик
-      const handlerId = listeners[key](value);
+    if (handlersTypes.includes(key)) { // сетаем обработчик
+      const handlerId = registry.registerHandler(key, value);
       element.setAttribute(`data-${key}`, handlerId);
     }
-    else { // сетаем аттрибут
-      element.setAttribute(key, escape(value));
+    else { // сетаем аттрибут, если значение truthy
+      if (value) {
+        element.setAttribute(key, value);
+      }
     }
   });
 };

@@ -1,30 +1,34 @@
 import { render } from './render.js';
 import { cleanDeadHandlers } from './handlers.js';
 
-let routes = [];
-let errorComponent = {};
+export let routes = [];
 
-export const setRoutes = (routesList) => {
-  routes = routesList;
+const registerRoute = (route, mountTo) => {
+  const { path, component } = route;
+  routes.push({ path, component, mountTo });
 };
 
-export const setErrorComponent = (Error) => {
-  errorComponent = Error;
+export const Routes = (data) => {
+  const { children, mountTo } = data;
+  children.forEach((child) => registerRoute(child, mountTo));
+  return;
 };
 
-const navigate = pathname => routes
+export const Route = (data) => data;
+
+const navigate = (pathname) => (routes
   .find((route) => {
     const pattern = route.path.replace(/:[^/]+/g, '([^/]+)') + '/?$';
     const regex = new RegExp('^' + pattern);
     return regex.test(pathname);
-  }) || errorComponent;
+  }));
 
 export const mountRoute = async () => {
   const href = (window.location.href).replace(/\/+$/, '');
   if (window.location.href.at(-1) === '/') history.replaceState({}, '', href);
   const { pathname } = new URL(href);
-  const { component, parentSelector } = navigate(pathname);
-  await render(parentSelector, await component());
+  const { component, mountTo } = navigate(pathname);
+  await render(mountTo, await component());
   cleanDeadHandlers();
 };
 

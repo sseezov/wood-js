@@ -1,18 +1,11 @@
 import { initListeners } from './handlers.js';
 import { render } from './render.js';
-import { mountRoute, setErrorComponent, setRoutes } from './router.js';
+import { mountRoute, routes } from './router.js';
 
-export function initWood(App, routes, errorComponent) {
-  if (errorComponent) {
-    setErrorComponent(errorComponent);
-  }
-
-  if (routes) {
-    setRoutes(routes);
+export async function initWood(App, selector) {
+  await render(selector, App());
+  if (routes.length > 0) {
     mountRoute();
   }
-
-  render('#app', App());
-
   initListeners();
 }
