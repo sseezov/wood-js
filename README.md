@@ -108,4 +108,4 @@ export default defineConfig({
 
 ## NPM
 
-<https://www.npmjs.com/package/@sseezov/woodjsx>
+<https://www.npmjs.com/package/woodjsx>
