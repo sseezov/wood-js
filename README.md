@@ -1,25 +1,26 @@
-# wood-js
+# woodjsx
 
-**760 bytes** (minified + brotlied) — JSX library with built-in router.
+**1.6KB** (minified + brotlied) — JSX library with built-in router.
 
 ## Features
 
-- ⚡ **Super small and dead simple** - read all the source code in a few minutes
-- 🎨 **JSX syntax** (fragments, children components support)
-- 🧭 **Client-side router** — SPA out of the box
-- 🖱️ **Event handlers** — onClick, onSubmit
-- 📦 **No virtual DOM, no hooks** — intentional choice for simplicity
-- 🔧 **Zero runtime dependencies** — works with Vite
-- 🔄 **Transparent data flow, no magic** — explicit updates, full control
+- **Super small and dead simple** - read all the source code in a few minutes
+- **Full JSX syntax support** (fragments, children components, JS expressions)
+- **Client-side router** — SPA out of the box
+- **Event handlers** — onClick, onSubmit, onChange, etc
+- **No virtual DOM, no hooks** — intentional choice for simplicity
+- **Zero runtime dependencies** — works with Vite
+- **Async components** — no special hooks, just write `async / await` anywhere you need
+- **Transparent data flow, no magic** — explicit updates, full control
 
 ## Philosophy
 
 Wood.js gives you **full control** over DOM updates. No automatic re-renders, no virtual DOM diffing — just explicit, manual updates when you need them.
 
-- 🎯 **Manual renders** — call `render(querySelector, component)` exactly when state changes
-- 🔍 **Direct DOM access** — full vanilla DOM API available (`querySelector`, `addEventListener`, `classList`, etc.)
-- 🧩 **Low-level friendly** — mix JSX with vanilla JS without fighting the framework
-- 📦 **No hidden magic** — what you see is what happens
+- **Manual renders** — call `render(querySelector, component)` when you need to render component, for example on data fetch
+- **Direct DOM access** — full vanilla DOM API available (`querySelector`, `addEventListener`, `classList`, etc.) because you have full control over app rendering
+- **Low-level friendly** — mix JSX with vanilla JS without fighting the framework
+- **No hidden magic** — what you see is what happens
 
 ## Example: Manual Update
 
@@ -43,10 +44,10 @@ export default function Counter() {
 }
 ```
 
-## How to start project?
+## How to start a project?
 
 1. Install Vite, setup vite.config as shown below
-2. Create index.html file, with source script (for example "index.js")
+2. Create an index.html file, with source script (e.g. "index.js")
 3. Write in index.html:
 
 ```html
@@ -59,24 +60,33 @@ export default function Counter() {
 4. Write in index.js:
 
 ```javascript
-import { initWood } from '@sseezov/wood-js'
-import App from './src/App' // import your main component
-import MainPage from './src/pages/Main/MainPage' // import your pages
-import CatalogPage from './src/pages/Catalog/CatalogPage' // import your pages
-import Error from './src/pages/Error' // import Error component if needed
+import { initWood } from './src/core/initWood.js';
+import App from './src/App.jsx';
 
-const routes = [
-  { path: '/', component: MainPage, parentSelector: '#main' },
-  { path: '/catalog', component: CatalogPage, parentSelector: '#main' },
-] // define routes with path, component and parent selector in each route
-
-const ErrorRoute = { component: Error, parentSelector: '#main' } // set where to render error
-
-initWood(App, routes, ErrorRoute) // init app with main component, routes (optional), and error (optional)
+initWood(App, '#app');
 ```
 
-**Template**
-<https://github.com/sseezov/wood-js-template>
+Use routes if you need, similar to React Router:
+
+```jsx
+// App.jsx
+import { Route, Routes } from "./core/router";
+import Layout from "./shared/Layout.jsx";
+import PageA from "./pages/A.jsx";
+import PageB from "./pages/B.jsx";
+
+export default async function App() {
+  return (
+    <Layout>
+      <Routes mountTo="#main">
+        <Route path="/:appId/a" component={PageA} />
+        <Route path="/:appId/b" component={PageB} />
+        <Route path="*" component={Error} />
+      </Routes>
+    </Layout>
+  )
+}
+```
 
 ## Vite Setup
 
@@ -98,4 +108,4 @@ export default defineConfig({
 
 ## NPM
 
-<https://www.npmjs.com/package/@sseezov/wood-js>
+<https://www.npmjs.com/package/@sseezov/woodjsx>
